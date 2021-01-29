@@ -2054,8 +2054,6 @@ type CommonInfo struct {
 	// Policy for pulling images for this container
 	// +optional
 	ImagePullPolicy PullPolicy
-	// +optional
-	SecurityGroupId string
 }
 
 // Container represents a single container that is expected to be run on the host.
@@ -2231,6 +2229,8 @@ type VirtualMachine struct {
 	// resource flavor information
 	// +optional
 	Flavors []ResourceFlavor
+	// +optional
+	SecurityGroupId string
 }
 
 // Handler defines a specific action that should be taken
@@ -2413,10 +2413,13 @@ const (
 	// PodUnknown means that for some reason the state of the pod could not be obtained, typically due
 	// to an error in communicating with the host of the pod.
 	PodUnknown PodPhase = "Unknown"
-	// SchedulerAssigned represents status of the assigned scheduler for this pod.
-	SchedulerAssigned PodPhase = "assigned"
-	// ClusterBinded represents status of the binded cluster for this pod.
-	ClusterBinded PodPhase = "binded"
+
+	// PodAssigned means that the pod has a scheduler assigned to.
+	PodAssigned PodPhase = "Assigned"
+	// PodBound means that the pod has a cluster bound to.
+	PodBound PodPhase = "Bound"
+	// ClusterScheduled means that openstack vms has been created for the pod
+	ClusterScheduled PodPhase = "Scheduled"
 )
 
 type PodConditionType string
@@ -3220,6 +3223,8 @@ type PodStatus struct {
 	// Assigned scheduler
 	// +optional
 	AssignedScheduler ResourceScheduler
+	// +optional
+	ClusterInstanceId string
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
